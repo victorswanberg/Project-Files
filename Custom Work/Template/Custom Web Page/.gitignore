@@ -1,0 +1,18 @@
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Large video files - they will have to be copied manually
+*.mp4
+
+#npm
+npm-debug.log
+
+#iis
+web.config
+
+# Office Temp Files
+~$*
+
+#Package folder
+Package/

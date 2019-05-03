@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config identifier="ebay-essentials" uribase="http://sublimemedia.com" catalog="eBay Essentials" version="1.00.00">
+
+  <window width="1016" height="684" allowresize="true" launchinpopup="false" />
+
+  <languages default="en-us">
+    <language code="en-us" direction="ltr"><![CDATA[English]]></language>
+    <!-- sample languages; use as examples for localization
+    <language code="arb"><![CDATA[العربية]]></language>
+    <language code="zh"><![CDATA[简体中文]]></language>
+    <language code="nl"><![CDATA[Nederlands]]></language>
+    <language code="fr"><![CDATA[Français]]></language>
+    <language code="es"><![CDATA[Español]]></language>-->
+  </languages>
+
+  <!-- pages: can be 'open' or 'linear'. Linear navigation forces the learner to visit the pages in order according to the scoMenu -->
+  <!-- interactions: can be 'required' or 'optional', indicating whether page interactions must be completed before continuing to the next page. -->
+  <navigationlock pages="linear" interactions="required" />
+
+ <!-- 
+  lms reporting: 'passfail', 'completion', 'objectives' and 'interactions' can be reported or not to the LMS which has different
+  effects depending on the protocol. SCORM 1.2 has a combined completion and passfail indicator, so if you choose both passfail and completion
+  with SCORM 1.2, the course must set itself as both scored and all pages must be completed for it to be considered finished. 
+  If objectives are set to true, the course will attempt to read the objectives from
+  base.html and only report objectives if they are found. Further, the course will base the score on the activities associated with the objectives 
+  and not the the general completion of the pages or the score reported by the assessment.
+  -->
+  <!-- 
+  scores: thresholds are between 0 and 1; 80% = 0.8, 100% = 1 
+          scoremin and scoremax are real numbers.
+  -->
+  <lms scoremin="0" scoremax="100" scorethreshold="0.8" completionthreshold="1">
+    <reporting passfail="false" completion="true" objectives="false" interactions="true" />
+    <!-- preferredapis: list desired communication APIs in order of preference: xApi, Scorm2004Api, Scorm12Api, AiccApi -->
+    <preferredapis>
+      <api>none</api>
+      <!-- <api>xApi</api> -->
+<!--       <api>Scorm2004Api</api>
+      <api>Scorm12Api</api> -->
+      <!-- <api>AiccApi</api> -->
+    </preferredapis>
+  </lms>
+
+  <dialogswitches exitdialog="false" returndialog="false" reviewmodedialog="false" preassessmentdialog="false" assessmentdialog="false" languagedialog="false" />
+
+  <sniffers>
+    <plugins>
+      <!-- for Flash: "A.B.C.D" = version A.B rev C.D -->
+      <!--<allow plugin="flash" version="10" />-->
+      <!-- for Silverlight: "A.B.C.D" -->
+      <!--<allow plugin="silverlight" version="4.0.50401.0" />-->
+    </plugins>
+    <browsers denyunlisted="true">
+      <!-- client currently detected: [chrome|firefox|msie|opera|safari] -->
+      <!-- platforms currently detected: [windows|iemobile|macintosh|ios|x11|android] -->
+      <allow client="chrome" />
+      <allow client="safari" platform="ios" version="7" />
+      <allow client="msie" version="9" />
+      <!--<allow client="firefox" />-->
+    </browsers>
+  </sniffers>
+
+</config>

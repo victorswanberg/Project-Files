@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div id="scoInfo" class="hidden">
+        <div id="scoName">Course Name</div>
+        <div id="scoDescription">Course Description</div>
+        <div id="scoCopyright">Copyright© 2018 Microsoft Corporation. All Rights Reserved.</div>
+        <div id="scoRightclick">This course was developed by Sublime Media - http://sublimemedia.com</div>
+    </div>
+    <div id="scoLabels" class="hidden">
+        <div id="scoLabelsTopicSubmenu">topic submenu</div>
+        <div id="scoLabelsPlayAudio">Play Audio Clip</div>
+        <div id="scoLabelsPauseAudio">Pause Audio Clip</div>
+        <div id="scoLabelsAudioProgress">Audio clip progress</div>
+        <div id="scoLabelsAudioTranscriptTitle">Audio Transcript</div>
+        <div id="scoLabelsShowTranscript">Show Audio Transcript</div>
+        <div id="scoLabelsRestartAudio">Restart Audio</div>
+        <div id="scoLabelsRevealText">Reveal Additional Text</div>
+        <div id="scoLabelsSelectToReveal">Select to reveal</div>
+        <div id="scoLabelsSelectToReturn">Select to return</div>
+        <div id="scoLabelCurrentModule">Current Module</div>
+        <div id="scoLabelCurrentPage">Current Page</div>
+        <div id="scoLabelNextCarousel">Reveal next carousel slide</div>
+        <div id="scoLabelPreviousCarousel">Reveal previous carousel slide</div>
+        <div id="scoLabelCarouselSlideNum">Carousel slide _num_ of _total_</div> <!-- Note to translator: _num_ and _total_ will be replaced with the actual number of the slide -->
+    </div>
+    <!--
+    <div id="scoObjectives" class="hidden">
+        <div id="sco_objective_1" data-objective-activites="page_1_id activity_5_id question_8_id" scorescheme="passfail">
+            Compute probability distributions on image intensities or objects from training cases.
+        </div>
+        <div id="sco_objective_2" data-objective-activites="page_1_id activity_5_id question_8_id" scorescheme="completion">
+            Use these probabilities for discrimination or estimation by maximum posterior and maximum likelihood methods.
+        </div>
+        <div id="sco_objective_3" data-objective-activites="page_1_id activity_5_id question_8_id" scorescheme="passfail">
+            Compute geometric loci such as edges, ridges, and corners.
+        </div>
+    </div>
+    -->
+    <!-- Content is injected into scoContent -->
+<!--     <div role="main" id="scoContent" aria-atomic="true" aria-live="assertive"></div> -->
+    <div role="main" id="scoContent" aria-live="assertive" style="background-color:#2B3275"></div>
+    <nav class="collapsed" id="scoMenu" role="navigation">
+      <div class="container-fluid">
+        <div class="row white-bg">
+          <div class="col-xs-12 col-sm-8 col-sm-offset-2 dark-grey-bg white prompt-banner module-incomplete-prompt">
+            <p style="font-weight:normal">There's more to see here. Keep exploring.</p>
+          </div>
+          <div class="col-xs-12 col-sm-8 col-sm-offset-2 dark-grey-bg white prompt-banner module-completed-prompt">
+            <p style="font-weight:normal">Keep exploring.</p>
+          </div>
+          <div class="col-xs-12 col-sm-8 col-sm-offset-2 dark-grey-bg white prompt-banner course-completed-prompt">
+            <p style="font-size:3em; font-weight: normal; padding-bottom:0; padding-top:0.5em">Congrats!</p>
+            <p style="font-weight:normal">You’ve explored everything here. Thanks for starting your journey with us.<br>You can keep looking around, or go learn more from your team!</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div id="scoSubNav" aria-live="polite"></div>
+          </div>
+          <div class="col-xs-12 sco-menu-hamburger-wrapper">
+            <button tabindex="0" id="scoMenuHamburger"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span><span class="sr-only">Expand topic menu</span></button>
+          </div>
+        </div>
+        <div class="row menu-items  row-height-8">
+          <div class="sr-only">Topic Menu</div>
+          <a tabindex="0" href="#" data-module-id="module-1" class="col-xs-6 col-sm-3 active">
+            Page 1
+            <div data-page-id="page" class="active">
+              Welcome to eBay
+            </div>
+          </a>
+      </div>
+    </nav>
+    <div id="scoDialogs">
+        <div id="languageDialog" class="modal fade" tabindex="-1" role="dialog" aria-atomic="true" aria-live="assertive" aria-labelledby="languageDialogTitle">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" role="banner">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-sm-6 col-md-4 really-light-green-bg dark-blue">
+                          <button data-return="en-us" data-dismiss="modal">
+                            <h2>Hello.</h2>
+                            <p>Explore in English</p>
+                          </button>
+                        </div>
+                        <div class="col-sm-6 col-md-4 really-light-green-bg dark-blue">
+                          <button data-return="es-es" data-dismiss="modal">
+                            <h2>Hola.</h2>
+                            <p>Explora en Español</p>
+                          </button>
+                        </div>
+                        <div class="col-sm-6 col-md-4 really-light-green-bg dark-blue">
+                          <button data-return="tr" data-dismiss="modal">
+                            <h2>Merhaba.</h2>
+                            <p>Türkçe keşfet</p>
+                          </button>
+                        </div>
+                        <div class="col-sm-6 col-md-4 really-light-green-bg dark-blue">
+                          <button data-return="ko" data-dismiss="modal">
+                            <h2>안녕하세요,</h2>
+                            <p>한국어로 진행하십시오</p>
+                          </button>
+                        </div>
+                        <div class="col-sm-6 col-md-4 really-light-green-bg dark-blue">
+                          <button data-return="zh-cn" data-dismiss="modal">
+                            <h2>你好。</h2>
+                            <p>使用简体中文进行浏览</p>
+                          </button>
+                        </div>
+                        <div class="col-sm-6 col-md-4 really-light-green-bg dark-blue">
+                          <button data-return="de" data-dismiss="modal">
+                            <h2>Hallo.</h2>
+                            <p>Auf Deutsch erkunden</p>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div id="returnDialog" class="modal fade" tabindex="-1" role="dialog" aria-atomic="true" aria-live="assertive" aria-labelledby="returnDialogTitle">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" role="banner">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="returnDialogTitle">Welcome Back</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Would you like to return to where you last left off?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-return=true data-dismiss="modal">
+                            <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Return
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Start Again
+                        </button>
+                        
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div id="exitDialog" class="modal fade" tabindex="-1" role="dialog" aria-live="assertive" aria-labelledby="exitDialogTitle">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" role="banner">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exitDialogTitle">Good Bye</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to leave?</p>
+                        <!--  <p>
+                            You have viewed and completed <strong>{{scoreRaw|value}}%</strong> of the pages in this course. You have {{completionStatus|(isTrue('value') ? '' : 'not yet')}} completed this course.
+                            {{completionStatus|(isTrue('value') ? '' : 'Are you sure you want to leave?')}}
+                        </p> -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Stay
+                        </button>
+                        <button type="button" class="btn btn-primary" data-return=true data-dismiss="modal">
+                            <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Exit
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div id="largeCourseModal" class="modal fade" tabindex="-1" role="dialog" aria-atomic="true" aria-live="assertive" aria-labelledby="largeCourseModalTitle">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" role="banner">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="largeCourseModalTitle"></h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-return=true data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+<!--         <div id="feedbackdialog">
+        </div>
+
+
+        <div id="helpdialog">
+        </div>
+
+
+        <div id="indexdialog">
+                <p>
+                    To complete this course, you must review the modules below by following the prescribed path. Click any of the active links below
+                    to go to that module.
+                </p>
+        </div>  -->
+    </div> <!--/#scoDialogs -->
+    <div id="scoRequirements" class="hidden">
+    </div>
+  </body>
+</html>

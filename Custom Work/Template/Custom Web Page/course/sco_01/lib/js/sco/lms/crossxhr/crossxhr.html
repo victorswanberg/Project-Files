@@ -1,0 +1,55 @@
+<HTML><HEAD><TITLE>CrossXHR demo</TITLE>
+
+  <!-- IMPORTANT: Change this to match the location where you placed crossxhr.js. 
+       Also, make sure crossxhr.swf is placed in the same directory as 
+       crossxhr.js -->
+  <script src="crossxhr.js"></script>
+
+</HEAD><BODY>
+
+<script>
+var request;
+function callback() {
+    alert(request.readyState);
+   if (request.readyState == 4) {
+     try {
+       if (request.status != 200) {
+           alert('error');
+       } else {
+          // ok, process...
+         alert("got data: "+request.responseText);
+       }
+     } catch(e) {
+         alert('error');
+     }
+   }
+}
+function test_get() {
+    alert('test get');
+  request = new CrossXHR();
+  request.onreadystatechange = callback;
+  request.open('GET', 'http://sublimemedia.com/return.txt?foo=bar');
+  request.send();
+}
+function test_bad() {
+  request = new CrossXHR();
+  request.onreadystatechange = callback;
+  request.open('GET', 'http://very.bad.url.com/');
+  request.send();
+}
+
+</script>
+<H1> Cross XHR demo </H1> 
+Click test button to request data from 
+<pre>
+http://search.yahooapis.com/ImageSearchService/V1/imageSearch?appid=YahooDemo&amp;query=Madonna&amp;results=2&amp;output=json
+</pre>
+
+<input type=button onclick="test_get()" value="test">
+<input type=button onclick="test_bad()" value="test bad">
+
+<BR> 
+* Requires flash to work
+<p> 
+<a href="http://code.google.com/p/crossxhr/">more info</a>
+</BODY></HTML> 

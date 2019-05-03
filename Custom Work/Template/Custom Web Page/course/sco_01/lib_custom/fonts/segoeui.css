@@ -1,0 +1,32 @@
+/*Fonts*/
+
+
+@font-face {
+  font-family: 'Segui Reg';
+  src: url('SegoeUI.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Segui Semilight';
+  src: url('SegoeUI-Semilight.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Segui Semibold';
+  src: url('SegoeUI-Semibold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Segui Semibold Italic';
+  src: url('SegoeUI-SemiboldItalic.woff') format('woff');
+  src: url('SegoeUI-SemiboldItalic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

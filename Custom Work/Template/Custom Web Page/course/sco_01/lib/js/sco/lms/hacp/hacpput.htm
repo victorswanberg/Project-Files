@@ -1,0 +1,272 @@
+<html>
+<head>
+    <title>Please Wait...</title>
+    <script type="text/javascript" src="../jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../crossxhr/crossxhr.js"></script>
+    <link href="../../../sco_01/theme/aicc/hacpput.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var _hacpPutData;
+        var _aicc_url;
+        var _aicc_sid;
+        var _xdomain;
+        var _postData;
+        var _waitMessage;
+        var _postFrames = [];
+        var _timeout;
+        //alert(_postData);
+        window.onload = function () {
+            if (window.dialogArguments) { // we are nested in an iFrame rather than a dialog
+                _hacpPutData = window.dialogArguments;
+            } else {
+                _hacpPutData = window.parent.hacpPutData;
+            }
+            _aicc_url = _hacpPutData.url;
+            _aicc_sid = _hacpPutData.sid;
+            _xdomain = _hacpPutData.xdomain;
+            _postData = _hacpPutData.data;
+            _waitMessage = _hacpPutData.waitMessage;
+            _failedMessage = _hacpPutData.failedMessage;
+            //alert('onload: ' + _postData + ' url: ' + _aicc_url);
+            $('#dialogLabel').text(_waitMessage);
+            _timeout = setTimeout(_hacpPutFailed, 60000);
+            if (_xdomain) {
+                var postRequest = new CrossXHR();
+                postRequest.onreadystatechange = function () {
+                    if (postRequest.readyState == 4) {
+                        try {
+                            if (postRequest.status != 200) {
+                                // fail!
+                                _hacpPutFailed();
+                            } else {
+                                // ok, process...
+                                parsePut(postRequest.responseText);
+                            }
+                        } catch (e) {
+                            // fail!
+                            _hacpPutFailed();
+                        }
+                    }
+                };
+                postRequest.open('POST', _aicc_url);
+                postRequest.send(_postData);
+            } else {
+                _executePost(_postData, _aicc_url, parsePut);
+            }
+        }
+        var parsePut = function (putReturn) {
+            //alert(putReturn);
+            // was it successful? do we care?
+            _destroyPostFrames();
+            doExit();
+        }
+        var doExit = function () {
+            //alert('doExit: ' + _aicc_url);
+            if (_xdomain) {
+                var postRequest = new CrossXHR();
+                postRequest.onreadystatechange = function () {
+                    if (postRequest.readyState == 4) {
+                        try {
+                            if (postRequest.status != 200) {
+                                // fail!
+                                _hacpPutFailed();
+                            } else {
+                                // ok, process...
+                                clearTimeout(_timeout);
+                                parseExit();
+                            }
+                        } catch (e) {
+                            // fail!
+                            _hacpPutFailed();
+                        }
+                    }
+                };
+                postRequest.open('POST', _aicc_url);
+                postRequest.send('command=ExitAU&version=4.0&session_id=' + _aicc_sid);
+            } else {
+                _executePost('command=ExitAU&version=4.0&session_id=' + _aicc_sid, _aicc_url, parseExit);
+            }
+        }
+        var parseExit = function (exitReturn) {
+            // let the default page know we are done, if it exists.
+            try {
+                window.parent.closeCourse();
+            } catch (e) {
+                
+            }
+            try {
+                window.closeCourse();
+            } catch (e) {
+
+            }
+            window.close();
+        }
+        var _executePost = function (postData, aicc_url, parseFunction) {
+            _postData = postData;
+            //alert(postData);
+            var postFrame = document.createElement('iframe');
+            var uniqueID = Math.floor(Math.random() * (1000000 + 1));
+            postFrame.id = 'postFrame' + uniqueID;
+            postFrame.name = 'postFrame' + uniqueID;
+            postFrame.style.width = '80%';
+            postFrame.style.height = '80%';
+            postFrame.style.zIndex = '1001';
+            postFrame.style.position = 'absolute';
+            postFrame.style.visibility = 'hidden';
+            postFrame.postFrameStatus = 'prepost';
+            postFrame.postData = postData;
+            postFrame.aicc_url = aicc_url;
+            //alert(aicc_url);
+            if (typeof (postFrame.onreadystatechange) == 'object') { // then the onreadystatechange event has been implemented in this browser...
+                //alert('use onreadystatechange');
+                postFrame.onreadystatechange = readystatechangeEvent;
+            } else {
+                //alert('use onload');
+                postFrame.onload = loadEvent;
+            }
+            function readystatechangeEvent() {
+                //alert('postFrame.onreadystatechange')
+                var postFrameReadyState = this.readyState;
+                var postFrameLocation = false;
+                try {
+                    postFrameLocation = window.frames[this.name].location + '';
+                } catch (e) {
+                    postFrameLocation = false;
+                }
+                //alert('postFrameReadyState=' + postFrameReadyState + ': ' + postFrameLocation);
+                if (postFrameReadyState == 'complete') {
+                    if (postFrameLocation) {
+                        //alert('postFrameReadyState=complete: ' + postFrameLocation);
+                    }
+                    if (this.postFrameStatus == 'prepost') {
+                        //alert(this.aicc_url);
+                        var html = '';
+                        html += '<body onload="document.all.Form1.submit();"><form id="Form1" name="Form1" action="' + this.aicc_url + '" method="post">';
+                        var postArray = this.postData.split('&');
+                        for (i = 0; i < postArray.length; i++) {
+                            var kvKey = postArray[i].split('=')[0];
+                            var kvValue = postArray[i].substring(postArray[i].indexOf("=") + 1, postArray[i].length);
+
+                            html += '<TEXTAREA name="' + kvKey + '">' + kvValue + '</TEXTAREA>';
+                        }
+                        html += '<input type="submit"></form></body>';
+                        this.postFrameStatus = 'posting';
+                        //alert(html);
+                        window.frames[this.name].document.write(html);
+                        window.frames[this.name].document.close();
+                    } else if ((postFrameLocation) && (postFrameLocation.indexOf(this.aicc_url) != -1)) {
+                        //alert('successful return. send to _parse')
+                        parseFunction(window.frames[this.name].document.body.innerText);
+                    } else {
+                        if (this.postFrameStatus == 'posting') {
+                            //alert('posting to posted');
+                            this.postFrameStatus = 'posted';
+                        } else {
+                            var err = _throwError('unknown http issue with postFrame');
+                        }
+                    }
+                } else if (postFrameLocation && postFrameLocation.indexOf('navcancl.htm') != -1) {
+                    //alert('postFrame 404')
+                    var err = _throwError('postFrame 404');
+                } else if (postFrameLocation && postFrameLocation.indexOf('blank') == -1) {
+                    //alert(postFrameLocation)
+                }
+            }
+            function loadEvent() {
+                //alert('postFrame.onload. this.postFrameStatus= ' + this.postFrameStatus)
+                var postFrameLocation = false;
+                try {
+                    postFrameLocation = window.frames[this.name].location + '';
+                } catch (e) {
+                    postFrameLocation = false;
+                }
+                //alert('location= ' + postFrameLocation);
+                if (this.postFrameStatus == 'prepost') {
+                    var html = '';
+                    html += '<form id="Form1" name="Form1" action="' + this.aicc_url + '" method="post">';
+                    var postArray = this.postData.split('&');
+                    for (i = 0; i < postArray.length; i++) {
+                        var kvKey = postArray[i].split('=')[0];
+                        var kvValue = postArray[i].substring(postArray[i].indexOf("=") + 1, postArray[i].length);
+
+                        html += '<TEXTAREA name="' + kvKey + '">' + kvValue + '</TEXTAREA>';
+                    }
+                    html += '<input type="submit"></form>';
+                    html += '<scr' + 'ipt type="text/javascript">';
+                    html += 'function submitForm(){';
+                    //html += ' alert(\'submitForm\');';
+                    html += ' if (document.forms[\'Form1\']){';
+                    html += '  document.forms[\'Form1\'].submit();';
+                    html += ' }else{';
+                    html += '  window.setTimeout("submitForm()",10);';
+                    html += ' }';
+                    html += '}';
+                    html += 'window.setTimeout("submitForm()",10);';
+                    html += '</sc' + 'ript>';
+                    //alert(html);
+                    this.postFrameStatus = 'posting';
+                    window.frames[this.name].document.write(html);
+                    window.frames[this.name].document.close();
+                } else if ((postFrameLocation) && (postFrameLocation.indexOf(this.aicc_url) != -1)) {
+                    var returnText = '';
+                    if (window.frames[this.name].document.body.innerText) {
+                        returnText = window.frames[this.name].document.body.innerText;
+                    } else if (window.frames[this.name].document.body.textContent) {
+                        returnText = window.frames[this.name].document.body.textContent;
+                    }
+                    //alert(returnText);
+                    //alert('successful return. send to _parse')
+                    parseFunction(returnText);
+                } else if (postFrameLocation && postFrameLocation.indexOf('navcancl.htm') != -1) {
+                    //alert('postFrame 404')
+                    var err = _throwError('postFrame 404');
+                } else if (postFrameLocation && postFrameLocation.indexOf('blank') == -1) {
+                    //alert(postFrameLocation)
+                } else if (this.postFrameStatus == 'posting') {
+                    //alert('posting to posted');
+                    this.postFrameStatus = 'posted';
+                } else if (this.postFrameStatus == 'posted') {
+                    //alert('Were done.');
+                } else {
+                    var err = _throwError('unknown http issue with postFrame');
+                }
+            }
+            document.body.insertBefore(postFrame, document.getElementById('message'));
+            _postFrames.push(postFrame);
+        }
+        var _destroyPostFrames = function () {
+            // Removes the post frames used by the class
+            for (var i = 0; i < _postFrames.length; i++)
+                if (_postFrames[i].parentNode)
+                    _postFrames[i].parentNode.removeChild(_postFrames[i])
+        }
+        function _throwError(errTxt) {
+            _hacpPutFailed();
+        }
+        function _hacpPutFailed() {
+            alert(_failedMessage);
+            //alert(_labels.find('apiconnector > aicc > hacpgetfailed').text());
+            parseExit();
+            //window.close();
+        }
+    </script>
+    <style type="text/css">
+        .tableStyle {
+            width: 100%;
+        }
+
+        .cellStyle {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="../../../sco_01/theme/images/loader.gif" />
+        <h1></h1>
+        <p id="dialogLabel"></p>
+    </div>
+    <div id="message"></div>
+</body>
+</html>

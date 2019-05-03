@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="no"?>
+<manifest identifier="ebay-essentials" version="1"
+          xmlns="http://www.imsglobal.org/xsd/imscp_v1p1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_v1p3"
+          xmlns:adlseq="http://www.adlnet.org/xsd/adlseq_v1p3"
+          xmlns:adlnav="http://www.adlnet.org/xsd/adlnav_v1p3"
+          xmlns:imsss="http://www.imsglobal.org/xsd/imsss"
+          xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 imscp_v1p1.xsd
+                              http://www.adlnet.org/xsd/adlcp_v1p3 adlcp_v1p3.xsd
+                              http://www.adlnet.org/xsd/adlseq_v1p3 adlseq_v1p3.xsd
+                              http://www.adlnet.org/xsd/adlnav_v1p3 adlnav_v1p3.xsd
+                              http://www.imsglobal.org/xsd/imsss imsss_v1p0.xsd">
+
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>2004 4th Edition</schemaversion>
+  </metadata>
+
+    <organizations default="course_default_org">
+    <organization identifier="course_default_org">
+      <title>eBay Essentials</title>
+      <item identifier="sco_01" identifierref="sco_01">
+        <title>eBay Essentials</title>
+      </item>
+    </organization>
+  </organizations>
+
+  <resources>
+    <resource identifier="sco_01" type="webcontent" adlcp:scormType="sco" href="sco_01/launch.html">
+      <file href="sco_01/launch.html"/>
+    </resource>
+  </resources>
+</manifest>

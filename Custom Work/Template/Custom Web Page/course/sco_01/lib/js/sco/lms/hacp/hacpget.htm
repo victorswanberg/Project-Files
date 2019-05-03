@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>Please Wait...</title>
+    <script type="text/javascript" src="../jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../crossxhr/crossxhr.js"></script>
+    <link href="../../../sco_01/theme/aicc/hacpget.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var _aicc_url = window.dialogArguments.postURL;
+        var _postData = window.dialogArguments.postData;
+        var _labels = window.dialogArguments.labels;
+        var _timeout;
+
+        window.onload = function () {
+            $('#dialogLabel').text(_labels.find('apiconnector > aicc > pleasewait').text());
+            _timeout = setTimeout(_hacpGetFailed, 60000);
+            var postRequest = new CrossXHR();
+            postRequest.onreadystatechange = function () {
+                if (postRequest.readyState == 4) {
+                    try {
+                        if (postRequest.status != 200) {
+                            // fail!
+                            _hacpGetFailed();
+                        } else {
+                            // ok, process...
+                            window.returnValue = postRequest.responseText;
+                            window.close();
+                        }
+                    } catch (e) {
+                        // fail!
+                        _hacpGetFailed();
+                    }
+                }
+            };
+            postRequest.open('POST', _aicc_url);
+            postRequest.send(_postData);
+        }
+
+        function _hacpGetFailed() {
+            alert(_labels.find('apiconnector > aicc > hacpgetfailed').text());
+            window.close();
+        }
+    </script>
+    <style type="text/css">
+        .tableStyle {
+            width: 100%;
+        }
+
+        .cellStyle {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="../../../sco_01/theme/images/loader.gif" />
+        <h1></h1>
+        <p id="dialogLabel"></p>
+    </div>
+    <div id="message"></div>
+</body>
+</html>

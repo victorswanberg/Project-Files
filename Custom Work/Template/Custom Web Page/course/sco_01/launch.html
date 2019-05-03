@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta http-equiv="cache-control" content="no-cache">
+	    <meta http-equiv="pragma" content="no-cache">
+	    <meta http-equiv="Expires" content="0">
+	    <link href="lib/css/launch.css" rel="stylesheet">
+	    <script src="lib/js/launch.js"></script>
+	</head>
+<body>
+	<div id="welcome" style="display:none">
+        <h1>
+        	Welcome.
+        </h1>
+        <p id="sm_message">
+        	This course is designed to launch in a separate window. If you don't complete the course in one session, close the course window. When you return, you will be able to start where you left off. When you complete the course, close the course window and return to the launch page for confirmation of course credit, or to relaunch the course.
+        </p>
+        <a href="#" onclick="window.sm.launchCourse()">Launch Course</a>
+    </div>
+    <div id="launched" style="display:none">
+        <h1>
+        	Course Launched.
+        </h1>
+        <p>
+        	The course has been launched in another window.
+		</p>
+			IMPORTANT: Your progress may be lost if you close or
+			navigate away from this window while the course is running.
+		</p>
+    </div>
+    <div id="closed" style="display:none">
+        <h1>
+        	Course Closed.
+        </h1>
+        <p id="sm_message">
+        	The course is closed. You may check your progress or verify credit by closing this window, and returning to the launch page.
+        </p>
+    </div>
+</body>
+</html>
